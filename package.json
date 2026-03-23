@@ -1,0 +1,17 @@
+{
+  "name": "kalshi-bot",
+  "version": "1.0.0",
+  "description": "Kalshi prediction market trading bot",
+  "main": "main.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning main.js",
+    "dev": "node --disable-warning=ExperimentalWarning --watch main.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "blessed": "^0.1.81",
+    "dotenv": "^16.4.1",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}
