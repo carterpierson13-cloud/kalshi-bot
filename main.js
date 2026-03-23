@@ -16,9 +16,8 @@ function validateConfig() {
     console.error('ERROR: KALSHI_API_KEY_ID is not set in your .env file.');
     process.exit(1);
   }
-  const fs = require('fs');
-  if (!fs.existsSync(config.KALSHI_PRIVATE_KEY_PATH)) {
-    console.error(`ERROR: Private key not found at ${config.KALSHI_PRIVATE_KEY_PATH}`);
+  if (!config.KALSHI_PRIVATE_KEY) {
+    console.error('ERROR: KALSHI_PRIVATE_KEY is not set in your environment.');
     process.exit(1);
   }
 }
