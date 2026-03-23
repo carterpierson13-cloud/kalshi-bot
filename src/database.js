@@ -1,6 +1,5 @@
 'use strict';
-// Uses Node.js built-in sqlite (Node >= 22.5). No native compilation needed.
-const { DatabaseSync } = require('node:sqlite');
+const Database = require('better-sqlite3');
 const config = require('./config');
 const logger = require('./logger');
 
@@ -8,7 +7,7 @@ let db;
 
 function getDb() {
   if (!db) {
-    db = new DatabaseSync(config.DB_PATH);
+    db = new Database(config.DB_PATH);
     db.exec('PRAGMA journal_mode = WAL;');
   }
   return db;
