@@ -19,7 +19,6 @@ import base64
 import logging
 import os
 import time
-from pathlib import Path
 from typing import Any
 
 import requests
@@ -49,23 +48,23 @@ class KalshiClient:
     def __init__(self) -> None:
         self.base_url = config.KALSHI_API_BASE
         self.api_key_id = os.getenv("KALSHI_API_KEY_ID")
-        private_key_path = os.getenv("KALSHI_PRIVATE_KEY_PATH", "./kalshi_private_key.pem")
+        private_key_pem = os.getenv("KALSHI_PRIVATE_KEY")
 
         if not self.api_key_id:
             raise EnvironmentError(
                 "KALSHI_API_KEY_ID not set. Check your .env file."
             )
+        if not private_key_pem:
+            raise EnvironmentError(
+                "KALSHI_PRIVATE_KEY not set. Set it to the PEM-encoded RSA private key contents."
+            )
 
         # Load RSA private key used to sign every request.
-        key_path = Path(private_key_path)
-        if not key_path.exists():
-            raise FileNotFoundError(
-                f"Private key not found at {key_path}. "
-                "Generate one with: openssl genrsa -out kalshi_private_key.pem 2048 "
-                "and upload the public key to Kalshi's API settings."
-            )
-        with open(key_path, "rb") as f:
-            self.private_key = serialization.load_pem_private_key(f.read(), password=None)
+        # The env var may use literal \n instead of real newlines; normalise either way.
+        private_key_pem = private_key_pem.replace("\\n", "\n")
+        self.private_key = serialization.load_pem_private_key(
+            private_key_pem.encode(), password=None
+        )
 
         self.session = requests.Session()
         logger.info("KalshiClient initialised (key_id=%s)", self.api_key_id)

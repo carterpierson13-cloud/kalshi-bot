@@ -1,6 +1,5 @@
 'use strict';
 const crypto = require('crypto');
-const fs = require('fs');
 const axios = require('axios');
 const config = require('./config');
 const logger = require('./logger');
@@ -10,11 +9,11 @@ class KalshiClient {
     this.base = config.KALSHI_API_BASE;
     this.keyId = config.KALSHI_API_KEY_ID;
 
-    const keyPath = config.KALSHI_PRIVATE_KEY_PATH;
-    if (!fs.existsSync(keyPath)) {
-      throw new Error(`Private key not found: ${keyPath}`);
+    if (!config.KALSHI_PRIVATE_KEY) {
+      throw new Error('KALSHI_PRIVATE_KEY not set. Set it to the PEM-encoded RSA private key contents.');
     }
-    this.privateKey = fs.readFileSync(keyPath, 'utf8');
+    // The env var may use literal \n instead of real newlines; normalise either way.
+    this.privateKey = config.KALSHI_PRIVATE_KEY.replace(/\\n/g, '\n');
 
     logger.info('KalshiClient initialised', { keyId: this.keyId, mode: config.DRY_RUN ? 'DRY_RUN' : 'LIVE' });
   }

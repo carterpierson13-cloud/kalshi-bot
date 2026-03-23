@@ -5,7 +5,7 @@ module.exports = {
   // ── API ──────────────────────────────────────────────────────────────────
   KALSHI_API_BASE: 'https://api.elections.kalshi.com/trade-api/v2',
   KALSHI_API_KEY_ID: process.env.KALSHI_API_KEY_ID || '',
-  KALSHI_PRIVATE_KEY_PATH: process.env.KALSHI_PRIVATE_KEY_PATH || './kalshi_private_key.pem',
+  KALSHI_PRIVATE_KEY: process.env.KALSHI_PRIVATE_KEY || '',
   REQUEST_TIMEOUT: 10_000, // ms
 
   // ── Mode ─────────────────────────────────────────────────────────────────
